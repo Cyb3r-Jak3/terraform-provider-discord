@@ -25,14 +25,13 @@ func dataSourceDiscordMember() *schema.Resource {
 			},
 			"username": {
 				ExactlyOneOf: []string{"user_id", "username"},
-				RequiredWith: []string{"username", "discriminator"},
 				Type:         schema.TypeString,
 				Optional:     true,
 			},
 			"discriminator": {
-				RequiredWith: []string{"username", "discriminator"},
-				Type:         schema.TypeString,
-				Optional:     true,
+				Type:       schema.TypeString,
+				Optional:   true,
+				Deprecated: "Discriminator is being deprecated by Discord. Only use this if there are users who haven't migrated their username.",
 			},
 			"joined_at": {
 				Type:     schema.TypeString,
@@ -78,12 +77,12 @@ func dataSourceMemberRead(ctx context.Context, d *schema.ResourceData, m interfa
 
 	if v, ok := d.GetOk("username"); ok {
 		username := v.(string)
-		discriminator := d.Get("discriminator").(string)
 		members, err := client.GuildMembersSearch(serverId, username, 1, discordgo.WithContext(ctx))
 		if err != nil {
 			return diag.Errorf("Failed to fetch members for %s: %s", serverId, err.Error())
 		}
 
+		discriminator := d.Get("discriminator").(string)
 		memberErr = fmt.Errorf("failed to find member by name#discriminator: %s#%s", username, discriminator)
 		for _, m := range members {
 			if m.User.Username == username && m.User.Discriminator == discriminator {
@@ -93,7 +92,9 @@ func dataSourceMemberRead(ctx context.Context, d *schema.ResourceData, m interfa
 			}
 		}
 	}
-
+	if memberErr != nil {
+		return diag.FromErr(memberErr)
+	}
 	d.Set("in_server", memberErr == nil)
 	if memberErr != nil {
 		d.Set("joined_at", nil)
@@ -110,10 +111,12 @@ func dataSourceMemberRead(ctx context.Context, d *schema.ResourceData, m interfa
 	for _, r := range member.Roles {
 		roles = append(roles, r)
 	}
+	if member.PremiumSince == nil {
+		d.Set("premium_since", nil)
+	}
 
 	d.SetId(member.User.ID)
 	d.Set("joined_at", member.JoinedAt.String())
-	d.Set("premium_since", member.PremiumSince.String())
 	d.Set("roles", roles)
 	d.Set("username", member.User.Username)
 	d.Set("discriminator", member.User.Discriminator)

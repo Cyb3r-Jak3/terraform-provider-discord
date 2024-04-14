@@ -15,8 +15,9 @@ type Context struct {
 	Config  *Config
 }
 
-func (c *Config) Client() (*Context, error) {
+func (c *Config) Client(version string) (*Context, error) {
 	session, err := discordgo.New(c.Token)
+	session.UserAgent = "discord-terraform/" + version
 	if err != nil {
 		return nil, err
 	}

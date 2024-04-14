@@ -15,6 +15,7 @@ func baseServerSchema() map[string]*schema.Schema {
 		"region": {
 			Type:     schema.TypeString,
 			Optional: true,
+			Computed: true,
 		},
 		"verification_level": {
 			Type:     schema.TypeInt,
@@ -101,6 +102,7 @@ func baseServerSchema() map[string]*schema.Schema {
 		"owner_id": {
 			Type:     schema.TypeString,
 			Optional: true,
+			Computed: true,
 		},
 	}
 }
@@ -238,8 +240,9 @@ func resourceServerCreate(ctx context.Context, d *schema.ResourceData, m interfa
 
 	d.SetId(server.ID)
 	if _, ok := d.GetOk("owner_id"); !ok {
-		d.Set("owner", server.OwnerID)
+		d.Set("owner_id", server.OwnerID)
 	}
+	d.Set("region", server.Region)
 	d.Set("icon_hash", server.Icon)
 	d.Set("splash_hash", server.Splash)
 

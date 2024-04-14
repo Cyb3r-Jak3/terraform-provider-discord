@@ -8,3 +8,5 @@ terraform.tfstate.backup
 .terraform/
 
 .idea/
+
+.env
