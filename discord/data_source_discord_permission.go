@@ -3,9 +3,9 @@ package discord
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"strconv"
 
-	"github.com/hashicorp/go-cty/cty"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
@@ -83,19 +83,10 @@ func dataSourceDiscordPermission() *schema.Resource {
 	}
 	for k := range permissions {
 		schemaMap[k] = &schema.Schema{
-			Optional: true,
-			Type:     schema.TypeString,
-			Default:  "unset",
-			ValidateDiagFunc: func(v interface{}, path cty.Path) (diags diag.Diagnostics) {
-				str := v.(string)
-				allowed := []string{"allow", "unset", "deny"}
-
-				if contains(allowed, str) {
-					return diags
-				} else {
-					return append(diags, diag.Errorf("%s is not an allowed value. Pick one of: allowed, unset, deny", str)...)
-				}
-			},
+			Optional:     true,
+			Type:         schema.TypeString,
+			Default:      "unset",
+			ValidateFunc: validation.StringInSlice([]string{"allow", "unset", "deny"}, false),
 		}
 	}
 
