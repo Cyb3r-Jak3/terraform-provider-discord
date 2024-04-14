@@ -44,7 +44,7 @@ func resourceDiscordInvite() *schema.Resource {
 				Optional: true,
 			},
 			"code": {
-				Type:     schema.TypeBool,
+				Type:     schema.TypeString,
 				Computed: true,
 			},
 		},
