@@ -27,7 +27,7 @@ func dataSourceDiscordRole() *schema.Resource {
 				Optional:     true,
 			},
 			"position": {
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Computed: true,
 			},
 			"color": {
@@ -74,15 +74,18 @@ func dataSourceDiscordRoleRead(ctx context.Context, d *schema.ResourceData, m in
 			break
 		}
 	}
+	if role == nil {
+		return diag.Errorf("Failed to find role by ID %s or name: %s", roleID, roleName)
+	}
 
 	d.SetId(role.ID)
 	d.Set("role_id", role.ID)
 	d.Set("name", role.Name)
-	d.Set("position", len(server.Roles)-role.Position)
+	d.Set("position", role.Position)
 	d.Set("color", role.Color)
 	d.Set("hoist", role.Hoist)
 	d.Set("mentionable", role.Mentionable)
-	d.Set("permissions", role.Permissions)
+	d.Set("permissions", int(role.Permissions))
 	d.Set("managed", role.Managed)
 
 	return diags
