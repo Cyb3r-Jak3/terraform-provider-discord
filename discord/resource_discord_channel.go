@@ -18,6 +18,14 @@ func getChannelSchema(channelType string, s map[string]*schema.Schema) map[strin
 			Type:     schema.TypeString,
 			Required: true,
 		},
+		"channel_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"category": {
+			Type:     schema.TypeString,
+			Optional: true,
+		},
 		"type": {
 			Type:     schema.TypeString,
 			Required: true,
