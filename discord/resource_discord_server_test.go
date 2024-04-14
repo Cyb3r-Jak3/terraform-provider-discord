@@ -6,7 +6,6 @@ import (
 )
 
 func TestAccResourceDiscordServer(t *testing.T) {
-	//t.Skip("Skipping test")
 	name := "discord_server.example"
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
