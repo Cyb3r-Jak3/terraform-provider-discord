@@ -17,7 +17,7 @@ func dataSourceDiscordSystemChannel() *schema.Resource {
 				Required: true,
 			},
 			"system_channel_id": {
-				Type:     schema.TypeInt,
+				Type:     schema.TypeString,
 				Computed: true,
 			},
 		},
@@ -30,10 +30,11 @@ func dataSourceDiscordSystemChannelRead(ctx context.Context, d *schema.ResourceD
 	var server *discordgo.Guild
 	client := m.(*Context).Session
 
-	serverId := d.Id()
+	serverId := d.Get("server_id").(string)
 	if server, err = client.Guild(serverId, discordgo.WithContext(ctx)); err != nil {
 		return diag.Errorf("Failed to fetch server %s: %s", serverId, err.Error())
 	} else {
+		d.SetId(serverId)
 		d.Set("system_channel_id", server.SystemChannelID)
 
 		return diags
