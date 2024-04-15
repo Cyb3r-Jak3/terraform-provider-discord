@@ -1,10 +1,10 @@
 package discord
 
 import (
-	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"golang.org/x/net/context"
 )
 
@@ -53,20 +53,11 @@ func resourceDiscordRole() *schema.Resource {
 				ForceNew: false,
 			},
 			"position": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Default:  1,
-				ForceNew: false,
-
-				ValidateFunc: func(val interface{}, key string) (warns []string, errors []error) {
-					v := val.(int)
-
-					if v < 0 {
-						errors = append(errors, fmt.Errorf("position must be greater than 0, got: %d", v))
-					}
-
-					return
-				},
+				Type:         schema.TypeInt,
+				Optional:     true,
+				Default:      1,
+				ForceNew:     false,
+				ValidateFunc: validation.IntAtLeast(1),
 			},
 			"managed": {
 				Type:     schema.TypeBool,
@@ -98,7 +89,7 @@ func resourceRoleCreate(ctx context.Context, d *schema.ResourceData, m interface
 	}
 	role, err := client.GuildRoleCreate(serverId, &discordgo.RoleParams{
 		Name:        d.Get("name").(string),
-		Permissions: Int64Ptr(d.Get("permissions").(int64)),
+		Permissions: Int64Ptr(int64(d.Get("permissions").(int))),
 		Color:       IntPtr(d.Get("color").(int)),
 		Hoist:       BoolPtr(d.Get("hoist").(bool)),
 		Mentionable: BoolPtr(d.Get("mentionable").(bool)),
