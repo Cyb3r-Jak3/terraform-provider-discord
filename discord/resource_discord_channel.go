@@ -131,7 +131,10 @@ func resourceChannelCreate(ctx context.Context, d *schema.ResourceData, m interf
 
 	serverId := d.Get("server_id").(string)
 	channelType := d.Get("type").(string)
-	channelTypeInt, _ := getDiscordChannelType(channelType)
+	channelTypeInt, okay := getDiscordChannelType(channelType)
+	if !okay {
+		return diag.Errorf("Invalid channel type: %s", channelType)
+	}
 
 	var (
 		topic     string
@@ -226,11 +229,13 @@ func resourceChannelRead(ctx context.Context, d *schema.ResourceData, m interfac
 	d.Set("position", channel.Position)
 
 	switch channelType {
-	case "text", "news":
+	case "text":
 		{
 			d.Set("topic", channel.Topic)
 			d.Set("nsfw", channel.NSFW)
 		}
+	case "news":
+		d.Set("topic", channel.Topic)
 	case "voice":
 		{
 			d.Set("bitrate", channel.Bitrate)

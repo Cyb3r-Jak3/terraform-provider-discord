@@ -26,15 +26,15 @@ func getTextChannelType(channelType discordgo.ChannelType) (string, bool) {
 func getDiscordChannelType(name string) (discordgo.ChannelType, bool) {
 	switch name {
 	case "text":
-		return 0, true
+		return discordgo.ChannelTypeGuildText, true
 	case "voice":
-		return 2, true
+		return discordgo.ChannelTypeGuildVoice, true
 	case "category":
-		return 4, true
+		return discordgo.ChannelTypeGuildCategory, true
 	case "news":
-		return 5, true
+		return discordgo.ChannelTypeGuildNews, true
 	case "store":
-		return 6, true
+		return discordgo.ChannelTypeGuildStore, true
 	}
 
 	return 0, false

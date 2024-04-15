@@ -67,7 +67,7 @@ func resourceRoleEveryoneUpdate(ctx context.Context, d *schema.ResourceData, m i
 
 	serverId := d.Get("server_id").(string)
 	d.SetId(serverId)
-	newPermission := d.Get("permissions").(int64)
+	newPermission := int64(d.Get("permissions").(int))
 
 	if role, err := client.GuildRoleEdit(serverId, serverId, &discordgo.RoleParams{
 		Permissions: &newPermission,

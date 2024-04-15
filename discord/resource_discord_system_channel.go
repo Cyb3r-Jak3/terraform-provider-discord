@@ -47,7 +47,7 @@ func resourceSystemChannelCreate(ctx context.Context, d *schema.ResourceData, m 
 		systemChannelId = v.(string)
 
 	} else {
-		return diag.Errorf("Failed to parse system channel id: %s", err.Error())
+		return diag.Errorf("Failed to parse system channel id")
 	}
 	if _, err := client.GuildEdit(serverId, &discordgo.GuildParams{
 		SystemChannelID: systemChannelId,
@@ -55,7 +55,7 @@ func resourceSystemChannelCreate(ctx context.Context, d *schema.ResourceData, m 
 		return diag.Errorf("Failed to edit server: %s", err.Error())
 	}
 
-	d.SetId(d.Get("server_id").(string))
+	d.SetId(serverId)
 
 	return diags
 }

@@ -23,9 +23,9 @@ func TestAccDatasourceDiscordServer(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(name, "name", "Discord Terraform Test Server"),
 					resource.TestCheckResourceAttrSet(name, "region"),
-					resource.TestCheckResourceAttr(name, "default_message_notifications", "0"),
-					resource.TestCheckResourceAttr(name, "verification_level", "0"),
-					resource.TestCheckResourceAttr(name, "explicit_content_filter", "0"),
+					resource.TestCheckResourceAttr(name, "default_message_notifications", "1"),
+					resource.TestCheckResourceAttr(name, "verification_level", "1"),
+					resource.TestCheckResourceAttr(name, "explicit_content_filter", "2"),
 					resource.TestCheckResourceAttr(name, "afk_timeout", "300"),
 					resource.TestCheckResourceAttrSet(name, "owner_id"),
 				),

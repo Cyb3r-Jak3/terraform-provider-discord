@@ -37,7 +37,8 @@ func testAccResourceDiscordRole(channelID string) string {
 	return fmt.Sprintf(`
     data "discord_color" "green" {
     	hex = "#00ff00"
-		}
+	}
+
 	resource "discord_role" "example" {
 		server_id = "%[1]s"
         name = "terraform-test-role"
