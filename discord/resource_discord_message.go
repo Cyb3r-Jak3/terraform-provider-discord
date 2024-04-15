@@ -2,8 +2,6 @@ package discord
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"log"
-	"os"
 	"strings"
 	"time"
 
@@ -321,20 +319,14 @@ func resourceMessageRead(ctx context.Context, d *schema.ResourceData, m interfac
 	if len(message.Embeds) > 0 {
 		d.Set("embed", unbuildEmbed(message.Embeds[0]))
 	}
-	d.Set("edited_timestamp", message.EditedTimestamp.Format(time.RFC3339))
+	if message.EditedTimestamp != nil {
+		d.Set("edited_timestamp", message.EditedTimestamp.Format(time.RFC3339))
+	}
 
 	return diags
 }
 
 func resourceMessageUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	f, err := os.OpenFile("text.log",
-		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Println(err)
-	}
-	defer f.Close()
-
-	logger := log.New(f, "", log.LstdFlags)
 
 	var diags diag.Diagnostics
 	client := m.(*Context).Session
@@ -348,8 +340,6 @@ func resourceMessageUpdate(ctx context.Context, d *schema.ResourceData, m interf
 		return diag.Errorf("Failed to fetch message %s in %s: %s", messageId, channelId, err.Error())
 	}
 	if d.HasChange("content") {
-		logger.Printf("old: %#v\n\n", message.Content)
-		logger.Printf("new: %#v\n\n", d.Get("content").(string))
 		content = d.Get("content").(string)
 	} else {
 		content = message.Content
