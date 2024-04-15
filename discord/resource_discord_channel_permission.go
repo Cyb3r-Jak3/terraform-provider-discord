@@ -63,8 +63,8 @@ func resourceChannelPermissionCreate(ctx context.Context, d *schema.ResourceData
 	permissionType, _ := getDiscordChannelPermissionType(d.Get("type").(string))
 	if err := client.ChannelPermissionSet(
 		channelId, overwriteId, permissionType,
-		d.Get("allow").(int64),
-		d.Get("deny").(int64), discordgo.WithContext(ctx)); err != nil {
+		int64(d.Get("allow").(int)),
+		int64(d.Get("deny").(int)), discordgo.WithContext(ctx)); err != nil {
 		return diag.Errorf("Failed to update channel permissions %s: %s", channelId, err.Error())
 	} else {
 		d.SetId(generateThreePartId(channelId, overwriteId, d.Get("type").(string)))
