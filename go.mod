@@ -6,10 +6,11 @@ toolchain go1.22.2
 
 require (
 	github.com/bwmarrin/discordgo v0.28.1
-	github.com/hashicorp/go-cty v1.4.1-0.20200723130312-85980079f637
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.33.0
+	github.com/hashicorp/terraform-plugin-framework v1.8.0
+	github.com/hashicorp/terraform-plugin-framework-validators v0.12.0
+	github.com/hashicorp/terraform-plugin-go v0.23.0
+	github.com/hashicorp/terraform-plugin-testing v1.7.0
 	github.com/polds/imgbase64 v0.0.0-20140820003345-cb7bf37298b7
-	golang.org/x/net v0.24.0
 	gopkg.in/go-playground/colors.v1 v1.2.0
 )
 
@@ -25,6 +26,7 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-checkpoint v0.5.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
+	github.com/hashicorp/go-cty v1.4.1-0.20200723130312-85980079f637 // indirect
 	github.com/hashicorp/go-hclog v1.6.3 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/go-plugin v1.6.0 // indirect
@@ -35,8 +37,8 @@ require (
 	github.com/hashicorp/logutils v1.0.0 // indirect
 	github.com/hashicorp/terraform-exec v0.20.0 // indirect
 	github.com/hashicorp/terraform-json v0.21.0 // indirect
-	github.com/hashicorp/terraform-plugin-go v0.22.2 // indirect
 	github.com/hashicorp/terraform-plugin-log v0.9.0 // indirect
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.33.0 // indirect
 	github.com/hashicorp/terraform-registry-address v0.2.3 // indirect
 	github.com/hashicorp/terraform-svchost v0.1.1 // indirect
 	github.com/hashicorp/yamux v0.1.1 // indirect
@@ -55,13 +57,14 @@ require (
 	github.com/zclconf/go-cty v1.14.4 // indirect
 	golang.org/x/crypto v0.22.0 // indirect
 	golang.org/x/mod v0.17.0 // indirect
+	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.19.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/tools v0.20.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240415180920-8c6c420018be // indirect
 	google.golang.org/grpc v1.63.2 // indirect
-	google.golang.org/protobuf v1.33.0 // indirect
+	google.golang.org/protobuf v1.34.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 )
