@@ -62,10 +62,10 @@ func resourceDiscordRole() *schema.Resource {
 			"position": {
 				Type:         schema.TypeInt,
 				Optional:     true,
-				Default:      1,
 				ForceNew:     false,
 				ValidateFunc: validation.IntAtLeast(1),
 				Description:  "The position of the role. This is reverse indexed, with `@everyone` being `0`.",
+				Computed:     true,
 			},
 			"managed": {
 				Type:        schema.TypeBool,
@@ -132,6 +132,8 @@ func resourceRoleCreate(ctx context.Context, d *schema.ResourceData, m interface
 		} else {
 			d.Set("position", newPosition)
 		}
+	} else {
+		d.Set("position", role.Position)
 	}
 
 	d.SetId(role.ID)
