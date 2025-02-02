@@ -35,6 +35,7 @@ jobs:
           DISCORD_TEST_SERVER_ID: ${{ secrets.DISCORD_TEST_SERVER_ID }}
           DISCORD_TEST_GUILD_ID: ${{ secrets.DISCORD_TEST_GUILD_ID }}
           DISCORD_TEST_USERNAME: ${{ secrets.DISCORD_TEST_USERNAME }}
+          DISCORD_TEST_CHANNEL_ID: ${{ secrets.DISCORD_TEST_CHANNEL_ID }}
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
