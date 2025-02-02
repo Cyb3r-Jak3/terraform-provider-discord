@@ -1,0 +1,1 @@
+terraform import discord_invite.example "<invite code>"

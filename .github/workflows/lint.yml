@@ -1,0 +1,53 @@
+name: Lint markdown
+on:
+  push:
+    paths:
+      - "**/*.md"
+      - "lint.yml"
+  pull_request:
+    paths:
+      - "**/*.md"
+      - "lint.yml"
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+
+  golangci:
+    name: golangci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed for `only-new-issues` to compare diffs
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: 'false'
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          args: "--config .golintci.yml"
+          only-new-issues: true
+
+  tfproviderlint:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Install Linting tools
+        run: |
+#          go install github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs@v0.20.1
+          go install github.com/bflad/tfproviderlint/cmd/tfproviderlintx@v0.30.0
+      - run: |
+          tfproviderlint 

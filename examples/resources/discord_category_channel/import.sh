@@ -1,0 +1,1 @@
+terraform import discord_category_channel.example "<channel id>"

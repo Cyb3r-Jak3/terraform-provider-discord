@@ -1,0 +1,1 @@
+terraform import discord_member_roles.example "<server id>:<member id>"

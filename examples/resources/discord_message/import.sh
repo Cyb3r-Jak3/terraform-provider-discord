@@ -1,0 +1,1 @@
+terraform import discord_message.example "<message id>"

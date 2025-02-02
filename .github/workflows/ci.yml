@@ -1,0 +1,43 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build_and_test:
+    name: Build and Test
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          cache: true
+          go-version-file: go.mod
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Test
+        run: go test -v -timeout 10m -coverprofile cover.out -parallel 4 ./internal/...
+        env:
+          TF_ACC: 1
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TEST_TOKEN }}
+          DISCORD_TEST_ROLE_NAME: ${{ secrets.DISCORD_TEST_ROLE_NAME }}
+          DISCORD_TEST_ROLE_ID: ${{ secrets.DISCORD_TEST_ROLE_ID }}
+          DISCORD_TEST_USER_ID: ${{ secrets.DISCORD_TEST_USER_ID }}
+          DISCORD_TEST_SERVER_ID: ${{ secrets.DISCORD_TEST_SERVER_ID }}
+          DISCORD_TEST_GUILD_ID: ${{ secrets.DISCORD_TEST_GUILD_ID }}
+          DISCORD_TEST_USERNAME: ${{ secrets.DISCORD_TEST_USERNAME }}
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

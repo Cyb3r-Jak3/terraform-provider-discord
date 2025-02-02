@@ -1,0 +1,28 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+## Example Usage
+
+### Content Example
+{{ tffile "examples/resources/discord_message/content.tf" }}
+
+### Embed Example
+{{ tffile "examples/resources/discord_message/embed.tf" }}
+
+{{ .SchemaMarkdown }}
+
+{{ if .HasImport -}}
+## Import
+
+Import is supported using the following syntax:
+
+{{codefile "shell" .ImportFile}}
+{{- end }}
