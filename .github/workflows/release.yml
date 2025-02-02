@@ -3,16 +3,17 @@ on:
   push:
     tags:
       - "v*"
+permissions:
+  actions: write
+  packages: write
+  contents: write
+  id-token: write
+  attestations: write
 jobs:
   goreleaser:
     name: Make a release on GitHub
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      packages: write
-      contents: read
-      id-token: write
-      attestations: write
+
     steps:
       - uses: actions/checkout@v4
         with:
