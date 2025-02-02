@@ -49,7 +49,7 @@ jobs:
         env:
           ARTIFACT_JSON: ${{ steps.release.outputs.artifacts }}
         run: |
-          $CHECKSUM_FILE = $(echo $ARTIFACT_JSON | jq -r '.[] | select(.type == "Checksum") | .[0].path')
+          CHECKSUM_FILE=$(echo $ARTIFACT_JSON | jq -r '.[] | select(.type == "Checksum") | .[0].path')
           echo $CHECKSUM_FILE
           echo "{CHECKSUM_FILE: $CHECKSUM_FILE}" >> $GITHUB_OUTPUT
       - uses: actions/attest-build-provenance@v2
