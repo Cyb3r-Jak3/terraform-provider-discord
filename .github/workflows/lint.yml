@@ -44,7 +44,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-          cache: false
+          cache: 'false'
       - name: Install Linting tools
         run: |
 #          go install github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs@v0.20.1
