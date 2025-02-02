@@ -33,6 +33,7 @@ jobs:
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6.1.0
+        id: release
         with:
           version: latest
           args: release --clean
@@ -40,6 +41,14 @@ jobs:
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get Checksum file
+        id: checksum
+        env:
+          ARTIFACT_JSON: ${{ steps.release.outputs.artifacts }}
+        run: |
+          $CHECKSUM_FILE = $(echo $ARTIFACT_JSON | jq -r '.[] | select(.type == "Checksum") | .[0].path')
+          echo $CHECKSUM_FILE
+          echo "{CHECKSUM_FILE: $CHECKSUM_FILE}" >> $GITHUB_OUTPUT
       - uses: actions/attest-build-provenance@v2
         with:
-          subject-checksums: ./checksums.txt
+          subject-checksums: ${{ steps.checksum.outputs.CHECKSUM_FILE }}

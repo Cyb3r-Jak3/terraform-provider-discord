@@ -28,7 +28,7 @@ builds:
       goarch: '386'
   binary: '{{ .ProjectName }}_v{{ .Version }}'
 archives:
-- format: zip
+- formats: ['zip']
   name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
 checksum:
   name_template: '{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
@@ -37,7 +37,7 @@ checksum:
     - glob: "terraform-registry-manifest.json"
       name_template: "{{ .ProjectName }}_{{ .Version }}_manifest.json"
 signs:
-  - artifacts: checksum
+  - artifacts: all
     args:
       # if you are using this is a GitHub action or some other automated pipeline, you
       # need to pass the batch flag to indicate its not interactive.
@@ -48,7 +48,8 @@ signs:
       - "${signature}"
       - "--detach-sign"
       - "${artifact}"
-
+sboms:
+  - artifacts: archive
 release:
   extra_files:
     - glob: "terraform-registry-manifest.json"
