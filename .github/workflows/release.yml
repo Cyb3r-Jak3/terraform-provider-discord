@@ -7,6 +7,12 @@ jobs:
   goreleaser:
     name: Make a release on GitHub
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      packages: write
+      contents: read
+      id-token: write
+      attestations: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,3 +38,7 @@ jobs:
         env:
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-checksums: ./checksums.txt
