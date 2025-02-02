@@ -3,12 +3,12 @@ on:
   push:
     paths:
       - "**/*.go"
-      - "./github/workflows/lint.yml"
+      - "./.github/workflows/lint.yml"
       - ".golintci.yml"
   pull_request:
     paths:
       - "**/*.go"
-      - "./github/workflows/lint.yml"
+      - "./.github/workflows/lint.yml"
       - ".golintci.yml"
 permissions:
   contents: read
